@@ -12,23 +12,27 @@ const AIPresentationDemo = () => {
   const prevSlide = () => setCurrentSlide(prev => Math.max(prev - 1, 0));
 
   const simulateChatGPTMemory = () => {
-    setChatGptMemory("✓ Remembered: You're a youth pastor in Anaheim");
+    setChatGptMemory("✓ Remembered: You're writing a devotional book about finding peace in difficult times");
     setTimeout(() => {
-      setChatGptResponse(`Since you're a youth pastor in Anaheim, here are some tailored retreat ideas:
+      setChatGptResponse(`I'll help you refine this devotional passage. Here's my analysis and suggestions:
 
-🏖️ **Beach Retreat at Newport Beach** (30 min drive)
-- Perfect for building community with beach games
-- Bonfire worship sessions at sunset
+📝 **Original Passage:**
+"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it."
 
-🏔️ **Mountain Retreat at Big Bear** (2 hours)
-- Winter: skiing, cozy cabin devotions
-- Summer: hiking, lake activities
+🔍 **Suggested Improvements:**
 
-🎢 **Theme Park Ministry at Knott's** 
-- Use rides as sermon illustrations
-- Team building through shared experiences
+1. **Tone & Sensitivity**
+   - The "drowning" metaphor might be too intense for readers going through trauma
+   - Consider a gentler metaphor like "navigating through rough waters"
 
-I remember you work with youth in Southern California, so these locations are all accessible from Anaheim!`);
+2. **Theological Accuracy**
+   - The "lifeline" imagery is good but could be more biblically grounded
+   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30
+
+3. **Revised Version:**
+"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding."
+
+Would you like me to suggest more biblical references or help develop this theme further?`);
     }, 1500);
   };
 
