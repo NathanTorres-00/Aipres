@@ -984,13 +984,25 @@ Based on real-time analysis of multiple sources:
               </div>
             </div>
             
-            <div className="w-full h-[50vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg">
-              <iframe 
-                src="https://www.cursor.com"
-                className="w-full h-full"
-                title="Cursor Website"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              />
+            <div className="w-full h-[50vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg bg-white">
+              <div className="h-full flex flex-col items-center justify-center p-8 text-center">
+                <div className="w-16 h-16 bg-blue-50 rounded-full flex items-center justify-center mb-6">
+                  <ExternalLink className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-medium text-neutral-900 mb-4">Visit Cursor's Website</h3>
+                <p className="text-neutral-600 mb-6 max-w-md">
+                  Due to security restrictions, we can't embed the website directly. Click below to visit Cursor's official website and explore their features.
+                </p>
+                <a 
+                  href="https://www.cursor.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
+                >
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  Open Cursor Website
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -1099,13 +1111,25 @@ Based on real-time analysis of multiple sources:
               </p>
             </div>
             
-            <div className="w-full h-[60vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg">
-              <iframe 
-                src="https://cluely.com"
-                className="w-full h-full"
-                title="Cluely Website"
-                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-              />
+            <div className="w-full h-[60vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg bg-white">
+              <div className="h-full flex flex-col items-center justify-center p-8 text-center">
+                <div className="w-16 h-16 bg-purple-50 rounded-full flex items-center justify-center mb-6">
+                  <ExternalLink className="w-8 h-8 text-purple-600" />
+                </div>
+                <h3 className="text-xl font-medium text-neutral-900 mb-4">Visit Cluely's Website</h3>
+                <p className="text-neutral-600 mb-6 max-w-md">
+                  Due to security restrictions, we can't embed the website directly. Click below to visit Cluely's official website and learn more about their invisible AI assistant.
+                </p>
+                <a 
+                  href="https://cluely.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center px-6 py-3 rounded-xl bg-neutral-900 text-white hover:bg-neutral-800 transition-colors"
+                >
+                  <ExternalLink className="w-5 h-5 mr-2" />
+                  Open Cluely Website
+                </a>
+              </div>
             </div>
           </div>
         </div>
