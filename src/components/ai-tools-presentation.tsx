@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp } from 'lucide-react';
 
 const AIPresentationDemo = () => {
