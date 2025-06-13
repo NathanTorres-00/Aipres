@@ -113,7 +113,7 @@ interface ChartTooltipContentProps {
     color?: string;
   }>;
   label?: string;
-  labelFormatter?: (value: any, payload: any[]) => React.ReactNode;
+  labelFormatter?: (value: any) => React.ReactNode;
   labelClassName?: string;
   formatter?: (value: any) => React.ReactNode;
   hideLabel?: boolean;
@@ -162,7 +162,7 @@ const ChartTooltipContent = React.forwardRef<HTMLDivElement, ChartTooltipContent
       if (labelFormatter) {
         return (
           <div className={cn('font-medium', labelClassName)}>
-            {labelFormatter(value, payload)}
+            {labelFormatter(value)}
           </div>
         );
       }
@@ -270,7 +270,7 @@ ChartTooltipContent.displayName = 'ChartTooltipContent';
 
 function getPayloadConfigFromPayload(
   config: ChartConfig,
-  item: unknown,
+  _item: unknown,
   key: string
 ) {
   return config[key];
