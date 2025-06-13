@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
 
 const AIPresentationDemo = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -878,6 +878,234 @@ Based on real-time analysis of multiple sources:
             <div className="text-center text-neutral-600 mt-12">
               <p>Thank you for exploring the future of AI tools with us</p>
               <p className="text-sm mt-2">Questions? Let's discuss!</p>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    {
+      title: "AI Mentions",
+      content: (
+        <div className="flex flex-col h-[70vh] justify-center">
+          <div className="max-w-5xl mx-auto w-full space-y-8">
+            <h2 className="text-3xl font-light text-neutral-900 text-center mb-12">Notable AI Tools in the Market</h2>
+            
+            <div className="grid gap-8">
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-blue-50">
+                    <Code className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Cursor</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      An AI-powered code editor that revolutionizes development with intelligent code completion, natural language code generation, and seamless integration with your existing workflow.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">2x productivity boost</span>
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">Trusted by top companies</span>
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">1M+ developers</span>
+                      <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">85% code completion accuracy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-red-50">
+                    <Video className="w-8 h-8 text-red-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Google Veo 3</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      Google's latest AI video generation model that creates high-quality, realistic videos from text descriptions, revolutionizing content creation and visual storytelling.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-red-100 text-red-700 px-3 py-1 rounded-full">4K resolution output</span>
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">60fps generation</span>
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">95% realism score</span>
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">10x faster than V2</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-indigo-50">
+                    <Users className="w-8 h-8 text-indigo-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Microsoft Teams Copilot</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      An AI assistant integrated into Microsoft Teams that enhances collaboration, summarizes meetings, generates action items, and helps teams work more efficiently.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">75% meeting time saved</span>
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">Enterprise ready</span>
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">500K+ organizations</span>
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">90% accuracy rate</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    {
+      title: "Cursor Spotlight",
+      content: (
+        <div className="flex flex-col h-[70vh] justify-center">
+          <div className="max-w-5xl mx-auto w-full">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-light text-neutral-900 mb-4">Cursor: The AI Code Editor</h2>
+              <p className="text-neutral-600 leading-relaxed max-w-2xl mx-auto">
+                Experience the future of coding with Cursor's AI-powered features
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 mb-8">
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-blue-600 mb-2">2x</div>
+                <p className="text-neutral-600">Faster Development</p>
+              </div>
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-green-600 mb-2">85%</div>
+                <p className="text-neutral-600">Code Completion Accuracy</p>
+              </div>
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-purple-600 mb-2">1M+</div>
+                <p className="text-neutral-600">Active Developers</p>
+              </div>
+            </div>
+            
+            <div className="w-full h-[50vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg">
+              <iframe 
+                src="https://www.cursor.com"
+                className="w-full h-full"
+                title="Cursor Website"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    {
+      title: "Cluely Story",
+      content: (
+        <div className="flex flex-col h-[70vh] justify-center">
+          <div className="max-w-5xl mx-auto w-full space-y-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-light text-neutral-900 mb-4">Cluely: The Invisible AI Assistant</h2>
+              <p className="text-neutral-600 leading-relaxed max-w-2xl mx-auto">
+                An undetectable AI that sees your screen, hears your calls, and feeds you answers in real time
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-6 mb-8">
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-purple-600 mb-2">99.9%</div>
+                <p className="text-neutral-600">Undetectability Rate</p>
+              </div>
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-blue-600 mb-2">50K+</div>
+                <p className="text-neutral-600">Active Users</p>
+              </div>
+              <div className="p-6 rounded-xl bg-white border border-neutral-100 text-center">
+                <div className="text-3xl font-semibold text-green-600 mb-2">3x</div>
+                <p className="text-neutral-600">Productivity Boost</p>
+              </div>
+            </div>
+
+            <div className="grid gap-8">
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-purple-50">
+                    <Eye className="w-8 h-8 text-purple-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Sees What You See</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      Cluely understands all content on your screen — code, slides, questions, docs, and dashboards, providing context-aware assistance without disrupting your workflow.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">100+ file formats</span>
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">Real-time analysis</span>
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">95% accuracy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-blue-50">
+                    <Headphones className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Hears What You Hear</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      Silently listens in the background, understanding your meetings in real time without ever joining them, providing instant answers and insights when you need them.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">10+ languages</span>
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">0.5s response time</span>
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">98% accuracy</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 rounded-2xl bg-white border border-neutral-100 shadow-sm">
+                <div className="flex items-start space-x-6">
+                  <div className="p-3 rounded-xl bg-green-50">
+                    <Brain className="w-8 h-8 text-green-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium text-neutral-900 mb-3">Undetectable by Design</h3>
+                    <p className="text-neutral-600 leading-relaxed mb-4">
+                      No bots in the room, no Zoom guests, no screen-share trails. Cluely works invisibly across all your tools and applications, providing assistance without ever being noticed.
+                    </p>
+                    <div className="flex flex-wrap gap-3 text-sm text-neutral-500">
+                      <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">Zero footprint</span>
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">100% privacy</span>
+                      <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">SOC 2 certified</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    {
+      title: "Cluely Demo",
+      content: (
+        <div className="flex flex-col h-[70vh] justify-center">
+          <div className="max-w-5xl mx-auto w-full">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-light text-neutral-900 mb-4">Experience Cluely</h2>
+              <p className="text-neutral-600 leading-relaxed max-w-2xl mx-auto">
+                See how Cluely transforms your workflow with invisible AI assistance
+              </p>
+            </div>
+            
+            <div className="w-full h-[60vh] rounded-2xl overflow-hidden border border-neutral-200 shadow-lg">
+              <iframe 
+                src="https://cluely.com"
+                className="w-full h-full"
+                title="Cluely Website"
+                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+              />
             </div>
           </div>
         </div>
