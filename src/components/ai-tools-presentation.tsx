@@ -416,7 +416,7 @@ Based on real-time analysis of multiple sources:
                 )}
 
                 {chatGptResponse && (
-                  <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm">
+                  <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm h-[400px] overflow-y-auto">
                     <div className="prose prose-neutral max-w-none">
                       <div className="whitespace-pre-line">{chatGptResponse}</div>
                     </div>
@@ -424,7 +424,7 @@ Based on real-time analysis of multiple sources:
                 )}
 
                 {!chatGptMemory && !chatGptResponse && (
-                  <div className="h-full flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
+                  <div className="h-[400px] flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
                     <p className="text-neutral-500 text-center">
                       Click "Start Demo" to see ChatGPT in action
                     </p>
