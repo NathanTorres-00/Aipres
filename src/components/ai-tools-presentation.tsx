@@ -6,6 +6,7 @@ const AIPresentationDemo = () => {
   const [chatGptMemory, setChatGptMemory] = useState('');
   const [chatGptResponse, setChatGptResponse] = useState('');
   const [claudeDemo, setClaudeDemo] = useState('');
+  const [claudeDemoType, setClaudeDemoType] = useState<'code' | 'script'>('code');
   const [perplexityResults, setPerplexityResults] = useState('');
 
   const nextSlide = () => setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1));
@@ -37,6 +38,7 @@ Would you like me to suggest more biblical references or help develop this theme
   };
 
   const generateClaudeCode = () => {
+    setClaudeDemoType('code');
     setClaudeDemo(`// Advanced Todo App with TypeScript and React
 import React, { useState } from 'react';
 
@@ -151,6 +153,43 @@ const TodoApp: React.FC = () => {
 };
 
 export default TodoApp;`);
+  };
+
+  const enhanceChoirScript = () => {
+    setClaudeDemoType('script');
+    setClaudeDemo(`📝 **Original Script:**
+"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert."
+
+🎯 **Enhanced Version:**
+"🎵 Calling All Voices! Join Our Musical Journey 🎵
+
+Dear Music Enthusiasts,
+
+We're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.
+
+📅 **Audition Details:**
+• Date: [Next Week's Date]
+• Time: 6:00 PM - 8:00 PM
+• Location: Main Sanctuary
+
+🎼 **What to Prepare:**
+• A brief vocal warm-up
+• A short piece of your choice (30-60 seconds)
+• Basic sight-reading assessment
+
+🌟 **Why Join Us?**
+• Be part of a supportive musical family
+• Develop your vocal skills
+• Perform in our upcoming concert series
+• Create lasting friendships
+
+No prior choir experience required - just bring your passion for music!
+
+RSVP: [Contact Information]
+
+Let's make beautiful music together! 🎶
+
+#ChoirAuditions #JoinTheChoir #MusicCommunity"`);
   };
 
   const simulatePerplexitySearch = () => {
@@ -559,7 +598,7 @@ Based on real-time analysis of multiple sources:
                 <div>
                   <h2 className="text-3xl font-light text-neutral-900 mb-4">Claude</h2>
                   <p className="text-neutral-600 leading-relaxed">
-                    Watch AI generate production-ready code with TypeScript and React
+                    Experience AI's versatility in code generation and content enhancement
                   </p>
                 </div>
 
@@ -570,36 +609,48 @@ Based on real-time analysis of multiple sources:
                   </div>
                   <div className="flex items-center space-x-3">
                     <CheckCircle className="w-5 h-5 text-blue-500" />
-                    <span className="text-neutral-700">Modern React Patterns</span>
+                    <span className="text-neutral-700">Content Enhancement</span>
                   </div>
                 </div>
 
-                <button 
-                  onClick={generateClaudeCode}
-                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-                >
-                  <Terminal className="w-5 h-5 mr-2" />
-                  Generate Todo App
-                </button>
+                <div className="space-y-4">
+                  <button 
+                    onClick={generateClaudeCode}
+                    className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                  >
+                    <Terminal className="w-5 h-5 mr-2" />
+                    Generate Todo App
+                  </button>
+
+                  <button 
+                    onClick={enhanceChoirScript}
+                    className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                  >
+                    <Brain className="w-5 h-5 mr-2" />
+                    Enhance Choir Script
+                  </button>
+                </div>
               </div>
 
               <div>
                 {claudeDemo ? (
-                  <div className="bg-[#1E1E1E] text-[#D4D4D4] p-6 rounded-xl shadow-lg font-mono text-sm overflow-auto max-h-[500px]">
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[#569CD6]">TodoApp.tsx</span>
-                      <div className="flex space-x-2">
-                        <div className="w-3 h-3 rounded-full bg-red-500" />
-                        <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                        <div className="w-3 h-3 rounded-full bg-green-500" />
+                  <div className={`${claudeDemoType === 'code' ? 'bg-[#1E1E1E] text-[#D4D4D4]' : 'bg-white text-neutral-900'} p-6 rounded-xl shadow-lg font-mono text-sm overflow-auto max-h-[500px]`}>
+                    {claudeDemoType === 'code' && (
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[#569CD6]">TodoApp.tsx</span>
+                        <div className="flex space-x-2">
+                          <div className="w-3 h-3 rounded-full bg-red-500" />
+                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                          <div className="w-3 h-3 rounded-full bg-green-500" />
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <pre className="whitespace-pre-wrap">{claudeDemo}</pre>
                   </div>
                 ) : (
                   <div className="h-full flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
                     <p className="text-neutral-500 text-center">
-                      Click "Generate Todo App" to see Claude in action
+                      Click a button to see Claude in action
                     </p>
                   </div>
                 )}
