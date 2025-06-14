@@ -1,20 +1,51 @@
 import * as React from 'react';
-
+import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'rounded-xl border bg-card text-card-foreground shadow',
-      className
-    )}
-    {...props}
-  />
-));
+const cardVariants = cva(
+  'rounded-lg border bg-card text-card-foreground shadow-sm transition-all duration-300',
+  {
+    variants: {
+      variant: {
+        default: 'bg-background',
+        glass: 'glass hover:shadow-lg hover:shadow-primary/20',
+        glassDark: 'glass-dark hover:shadow-lg hover:shadow-primary/20',
+        gradient: 'bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20',
+        shimmer: 'relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-shimmer before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent',
+      },
+      hover: {
+        lift: 'hover:-translate-y-1',
+        scale: 'hover:scale-105',
+        glow: 'hover:shadow-lg hover:shadow-primary/20',
+        none: '',
+      },
+      animation: {
+        float: 'animate-float',
+        pulse: 'animate-pulse-glow',
+        none: '',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+      hover: 'none',
+      animation: 'none',
+    },
+  }
+);
+
+export interface CardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof cardVariants> {}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant, hover, animation, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(cardVariants({ variant, hover, animation }), className)}
+      {...props}
+    />
+  )
+);
 Card.displayName = 'Card';
 
 const CardHeader = React.forwardRef<
@@ -35,7 +66,7 @@ const CardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn('font-semibold leading-none tracking-tight', className)}
+    className={cn('text-2xl font-semibold leading-none tracking-tight', className)}
     {...props}
   />
 ));

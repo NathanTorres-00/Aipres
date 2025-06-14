@@ -1,228 +1,66 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
+import { WhenISayAI } from './when-i-say-ai';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 1000 : -1000,
+    opacity: 0,
+    scale: 0.8,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 1000 : -1000,
+    opacity: 0,
+    scale: 0.8,
+    transition: {
+      duration: 0.5,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  }),
+};
+
+const contentVariants = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      delay: 0.2,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+  exit: {
+    opacity: 0,
+    y: -20,
+    transition: {
+      duration: 0.3,
+      ease: [0.4, 0, 0.2, 1],
+    },
+  },
+};
 
 const AIPresentationDemo = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [direction, setDirection] = useState(0);
   const [chatGptMemory, setChatGptMemory] = useState('');
   const [chatGptResponse, setChatGptResponse] = useState('');
   const [claudeDemo, setClaudeDemo] = useState('');
   const [claudeDemoType, setClaudeDemoType] = useState<'code' | 'script'>('code');
   const [perplexityResults, setPerplexityResults] = useState('');
-
-  const nextSlide = () => setCurrentSlide(prev => Math.min(prev + 1, slides.length - 1));
-  const prevSlide = () => setCurrentSlide(prev => Math.max(prev - 1, 0));
-
-  const simulateChatGPTMemory = () => {
-    setChatGptMemory("✓ Remembered: You're writing a devotional book about finding peace in difficult times");
-    setTimeout(() => {
-      setChatGptResponse(`I'll help you refine this devotional passage. Here's my analysis and suggestions:
-
-📝 **Original Passage:**
-"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it."
-
-🔍 **Suggested Improvements:**
-
-1. **Tone & Sensitivity**
-   - The "drowning" metaphor might be too intense for readers going through trauma
-   - Consider a gentler metaphor like "navigating through rough waters"
-
-2. **Theological Accuracy**
-   - The "lifeline" imagery is good but could be more biblically grounded
-   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30
-
-3. **Revised Version:**
-"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding."
-
-Would you like me to suggest more biblical references or help develop this theme further?`);
-    }, 1500);
-  };
-
-  const generateClaudeCode = () => {
-    setClaudeDemoType('code');
-    setClaudeDemo(`// Advanced Todo App with TypeScript and React
-import React, { useState } from 'react';
-
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-  priority: 'low' | 'medium' | 'high';
-  dueDate?: Date;
-}
-
-const TodoApp: React.FC = () => {
-  const [todos, setTodos] = useState<Todo[]>([]);
-  const [input, setInput] = useState('');
-  const [priority, setPriority] = useState<Todo['priority']>('medium');
-
-  const addTodo = () => {
-    if (input.trim()) {
-      setTodos([
-        ...todos,
-        {
-          id: Date.now(),
-          text: input.trim(),
-          completed: false,
-          priority,
-          dueDate: new Date()
-        }
-      ]);
-      setInput('');
-    }
-  };
-
-  const toggleTodo = (id: number) => {
-    setTodos(todos.map(todo =>
-      todo.id === id 
-        ? { ...todo, completed: !todo.completed }
-        : todo
-    ));
-  };
-
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter(todo => todo.id !== id));
-  };
-
-  return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
-      
-      <div className="flex gap-2 mb-4">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="flex-1 px-3 py-2 border rounded"
-          placeholder="Add a new todo..."
-        />
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value as Todo['priority'])}
-          className="px-3 py-2 border rounded"
-        >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <button
-          onClick={addTodo}
-          className="px-4 py-2 bg-blue-500 text-white rounded"
-        >
-          Add
-        </button>
-      </div>
-
-      <ul className="space-y-2">
-        {todos.map(todo => (
-          <li
-            key={todo.id}
-            className={\`flex items-center justify-between p-3 border rounded \${
-              todo.completed ? 'bg-gray-100' : ''
-            }\`}
-          >
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => toggleTodo(todo.id)}
-              />
-              <span className={\`\${todo.completed ? 'line-through' : ''}\`}>
-                {todo.text}
-              </span>
-              <span className={\`text-sm px-2 py-1 rounded \${
-                todo.priority === 'high' 
-                  ? 'bg-red-100 text-red-700'
-                  : todo.priority === 'medium'
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'bg-green-100 text-green-700'
-              }\`}>
-                {todo.priority}
-              </span>
-            </div>
-            <button
-              onClick={() => deleteTodo(todo.id)}
-              className="text-red-500 hover:text-red-700"
-            >
-              Delete
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default TodoApp;`);
-  };
-
-  const enhanceChoirScript = () => {
-    setClaudeDemoType('script');
-    setClaudeDemo(`📝 **Original Script:**
-"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert."
-
-🎯 **Enhanced Version:**
-"🎵 Calling All Voices! Join Our Musical Journey 🎵
-
-Dear Music Enthusiasts,
-
-We're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.
-
-📅 **Audition Details:**
-• Date: [Next Week's Date]
-• Time: 6:00 PM - 8:00 PM
-• Location: Main Sanctuary
-
-🎼 **What to Prepare:**
-• A brief vocal warm-up
-• A short piece of your choice (30-60 seconds)
-• Basic sight-reading assessment
-
-🌟 **Why Join Us?**
-• Be part of a supportive musical family
-• Develop your vocal skills
-• Perform in our upcoming concert series
-• Create lasting friendships
-
-No prior choir experience required - just bring your passion for music!
-
-RSVP: [Contact Information]
-
-Let's make beautiful music together! 🎶
-
-#ChoirAuditions #JoinTheChoir #MusicCommunity"`);
-  };
-
-  const simulatePerplexitySearch = () => {
-    setPerplexityResults(`# Latest AI Development Trends - June 2025
-
-Based on real-time analysis of multiple sources:
-
-## 1. Multimodal AI Systems
-- **Vision-Language Models**: New architectures achieving 98% accuracy in complex scene understanding
-- **Cross-Modal Learning**: Breakthrough in transferring knowledge between different sensory domains
-📊 *Source: Nature AI Journal, June 2025*
-
-## 2. Quantum-Enhanced Neural Networks
-- **Quantum Advantage**: 100x speedup in training large language models
-- **Hybrid Classical-Quantum Systems**: New frameworks for practical quantum ML
-📊 *Source: Quantum Computing Review, May 2025*
-
-## 3. Neuromorphic Computing
-- **Brain-Like Architectures**: 1000x energy efficiency improvement
-- **Adaptive Learning Systems**: Real-time neural network optimization
-📊 *Source: IEEE Spectrum, June 2025*
-
-## 4. Edge AI Advancements
-- **TinyML Breakthroughs**: Running GPT-4 level models on smartphones
-- **Edge-Cloud Synergy**: New distributed AI architectures
-📊 *Source: Edge Computing Digest, June 2025*
-
-## Industry Impact:
-"These advances are revolutionizing everything from healthcare diagnostics to autonomous systems."
-- Dr. Sarah Chen, MIT AI Lab
-
-*All data verified across multiple academic sources*`);
-  };
 
   const slides = [
     {
@@ -232,6 +70,27 @@ Based on real-time analysis of multiple sources:
           <div className="space-y-6 text-center max-w-3xl">
             <h1 className="text-6xl font-light tracking-tight text-neutral-900">
               Exploring AI Tools
+            </h1>
+            <p className="text-2xl text-neutral-600 font-light">
+              Real Use Cases in Action
+            </p>
+            <div className="h-px w-24 bg-neutral-200 mx-auto my-8" />
+            <div className="text-neutral-500 space-y-2">
+              <p className="text-lg">Featuring ChatGPT, Claude, and Perplexity</p>
+              <p className="text-sm font-medium">By Nate Torres</p>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    {
+      title: "When I Say AI",
+      content: (
+        <div className="flex flex-col items-center justify-center h-[70vh] space-y-8">
+          <div className="space-y-6 text-center max-w-3xl">
+            <h1 className="text-6xl font-light tracking-tight text-neutral-900">
+              When I Say AI
             </h1>
             <p className="text-2xl text-neutral-600 font-light">
               Real Use Cases in Action
@@ -416,60 +275,21 @@ Based on real-time analysis of multiple sources:
     {
       title: "ChatGPT Demo",
       content: (
-        <div className="flex flex-col h-[70vh] justify-center">
-          <div className="max-w-5xl mx-auto w-full">
-            <div className="grid grid-cols-2 gap-12">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-light text-neutral-900 mb-4">ChatGPT</h2>
-                  <p className="text-neutral-600 leading-relaxed">
-                    Experience how AI maintains context and delivers personalized interactions
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-neutral-700">Contextual Memory</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-500" />
-                    <span className="text-neutral-700">Personalized Responses</span>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={simulateChatGPTMemory}
-                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-                >
-                  <Play className="w-5 h-5 mr-2" />
-                  Start Demo
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                {chatGptMemory && (
-                  <div className="p-4 rounded-xl bg-green-50 border border-green-100">
-                    <p className="text-green-800 font-medium">{chatGptMemory}</p>
-                  </div>
-                )}
-
-                {chatGptResponse && (
-                  <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm h-[400px] overflow-y-auto">
-                    <div className="prose prose-neutral max-w-none">
-                      <div className="whitespace-pre-line">{chatGptResponse}</div>
-                    </div>
-                  </div>
-                )}
-
-                {!chatGptMemory && !chatGptResponse && (
-                  <div className="h-[400px] flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <p className="text-neutral-500 text-center">
-                      Click "Start Demo" to see ChatGPT in action
-                    </p>
-                  </div>
-                )}
-              </div>
+        <div className="space-y-6">
+          <div className="glass p-6 rounded-xl">
+            <div className="space-y-4">
+              <button 
+                onClick={() => {
+                  setChatGptMemory("✓ Remembered: You're writing a devotional book about finding peace in difficult times");
+                  setTimeout(() => {
+                    setChatGptResponse("I'll help you refine this devotional passage. Here's my analysis and suggestions:\n\n📝 **Original Passage:**\n\"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it.\"\n\n🔍 **Suggested Improvements:**\n\n1. **Tone & Sensitivity**\n   - The \"drowning\" metaphor might be too intense for readers going through trauma\n   - Consider a gentler metaphor like \"navigating through rough waters\"\n\n2. **Theological Accuracy**\n   - The \"lifeline\" imagery is good but could be more biblically grounded\n   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30\n\n3. **Revised Version:**\n\"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding.\"\n\nWould you like me to suggest more biblical references or help develop this theme further?");
+                  }, 1500);
+                }}
+                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+              >
+                <Brain className="w-5 h-5 mr-2" />
+                Simulate Memory
+              </button>
             </div>
           </div>
         </div>
@@ -591,70 +411,30 @@ Based on real-time analysis of multiple sources:
     {
       title: "Claude Demo",
       content: (
-        <div className="flex flex-col h-[70vh] justify-center">
-          <div className="max-w-5xl mx-auto w-full">
-            <div className="grid grid-cols-2 gap-12">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-light text-neutral-900 mb-4">Claude</h2>
-                  <p className="text-neutral-600 leading-relaxed">
-                    Experience AI's versatility in code generation and content enhancement
-                  </p>
-                </div>
+        <div className="space-y-6">
+          <div className="glass p-6 rounded-xl">
+            <div className="space-y-4">
+              <button 
+                onClick={() => {
+                  setClaudeDemoType('code');
+                  setClaudeDemo("// Advanced Todo App with TypeScript and React\nimport React, { useState } from 'react';\n\ninterface Todo {\n  id: number;\n  text: string;\n  completed: boolean;\n  priority: 'low' | 'medium' | 'high';\n  dueDate?: Date;\n}\n\nconst TodoApp: React.FC = () => {\n  const [todos, setTodos] = useState<Todo[]>([]);\n  const [input, setInput] = useState('');\n  const [priority, setPriority] = useState<Todo['priority']>('medium');\n\n  const addTodo = () => {\n    if (input.trim()) {\n      setTodos([\n        ...todos,\n        {\n          id: Date.now(),\n          text: input.trim(),\n          completed: false,\n          priority,\n          dueDate: new Date()\n        }\n      ]);\n      setInput('');\n    }\n  };\n\n  const toggleTodo = (id: number) => {\n    setTodos(todos.map(todo =>\n      todo.id === id \n        ? { ...todo, completed: !todo.completed }\n        : todo\n    ));\n  };\n\n  const deleteTodo = (id: number) => {\n    setTodos(todos.filter(todo => todo.id !== id));\n  };\n\n  return (\n    <div className=\"max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg\">\n      <h1 className=\"text-2xl font-bold mb-4\">Todo List</h1>\n      \n      <div className=\"flex gap-2 mb-4\">\n        <input\n          type=\"text\"\n          value={input}\n          onChange={(e) => setInput(e.target.value)}\n          className=\"flex-1 px-3 py-2 border rounded\"\n          placeholder=\"Add a new todo...\"\n        />\n        <select\n          value={priority}\n          onChange={(e) => setPriority(e.target.value as Todo['priority'])}\n          className=\"px-3 py-2 border rounded\"\n        >\n          <option value=\"low\">Low</option>\n          <option value=\"medium\">Medium</option>\n          <option value=\"high\">High</option>\n        </select>\n        <button\n          onClick={addTodo}\n          className=\"px-4 py-2 bg-blue-500 text-white rounded\"\n        >\n          Add\n        </button>\n      </div>\n\n      <ul className=\"space-y-2\">\n        {todos.map(todo => (\n          <li\n            key={todo.id}\n            className={`flex items-center justify-between p-3 border rounded ${todo.completed ? 'bg-gray-100' : ''}`}\n          >\n            <div className=\"flex items-center gap-2\">\n              <input\n                type=\"checkbox\"\n                checked={todo.completed}\n                onChange={() => toggleTodo(todo.id)}\n              />\n              <span className={`${todo.completed ? 'line-through' : ''}`}>\n                {todo.text}\n              </span>\n              <span className={`text-sm px-2 py-1 rounded ${\n                todo.priority === 'high' \n                  ? 'bg-red-100 text-red-700'\n                  : todo.priority === 'medium'\n                  ? 'bg-yellow-100 text-yellow-700'\n                  : 'bg-green-100 text-green-700'\n              }`}>\n                {todo.priority}\n              </span>\n            </div>\n            <button\n              onClick={() => deleteTodo(todo.id)}\n              className=\"text-red-500 hover:text-red-700\"\n            >\n              Delete\n            </button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n};\n\nexport default TodoApp;");
+                }}
+                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+              >
+                <Code className="w-5 h-5 mr-2" />
+                Generate Code
+              </button>
 
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500" />
-                    <span className="text-neutral-700">Type-Safe Code Generation</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-blue-500" />
-                    <span className="text-neutral-700">Content Enhancement</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4">
-                  <button 
-                    onClick={generateClaudeCode}
-                    className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-                  >
-                    <Terminal className="w-5 h-5 mr-2" />
-                    Generate Todo App
-                  </button>
-
-                  <button 
-                    onClick={enhanceChoirScript}
-                    className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-                  >
-                    <Brain className="w-5 h-5 mr-2" />
-                    Enhance Choir Script
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                {claudeDemo ? (
-                  <div className={`${claudeDemoType === 'code' ? 'bg-[#1E1E1E] text-[#D4D4D4]' : 'bg-white text-neutral-900'} p-6 rounded-xl shadow-lg font-mono text-sm overflow-auto max-h-[500px]`}>
-                    {claudeDemoType === 'code' && (
-                      <div className="flex items-center justify-between mb-4">
-                        <span className="text-[#569CD6]">TodoApp.tsx</span>
-                        <div className="flex space-x-2">
-                          <div className="w-3 h-3 rounded-full bg-red-500" />
-                          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                          <div className="w-3 h-3 rounded-full bg-green-500" />
-                        </div>
-                      </div>
-                    )}
-                    <pre className="whitespace-pre-wrap">{claudeDemo}</pre>
-                  </div>
-                ) : (
-                  <div className="h-full flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <p className="text-neutral-500 text-center">
-                      Click a button to see Claude in action
-                    </p>
-                  </div>
-                )}
-              </div>
+              <button 
+                onClick={() => {
+                  setClaudeDemoType('script');
+                  setClaudeDemo("📝 **Original Script:**\n\"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert.\"\n\n🎯 **Enhanced Version:**\n\"🎵 Calling All Voices! Join Our Musical Journey 🎵\n\nDear Music Enthusiasts,\n\nWe're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.\n\n📅 **Audition Details:**\n• Date: [Next Week's Date]\n• Time: 6:00 PM - 8:00 PM\n• Location: Main Sanctuary\n\n🎼 **What to Prepare:**\n• A brief vocal warm-up\n• A short piece of your choice (30-60 seconds)\n• Basic sight-reading assessment\n\n🌟 **Why Join Us?**\n• Be part of a supportive musical family\n• Develop your vocal skills\n• Perform in our upcoming concert series\n• Create lasting friendships\n\nNo prior choir experience required - just bring your passion for music!\n\nRSVP: [Contact Information]\n\nLet's make beautiful music together! 🎶\n\n#ChoirAuditions #JoinTheChoir #MusicCommunity\"");
+                }}
+                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Enhance Script
+              </button>
             </div>
           </div>
         </div>
@@ -776,52 +556,18 @@ Based on real-time analysis of multiple sources:
     {
       title: "Perplexity Demo",
       content: (
-        <div className="flex flex-col h-[70vh] justify-center">
-          <div className="max-w-5xl mx-auto w-full">
-            <div className="grid grid-cols-2 gap-12">
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-light text-neutral-900 mb-4">Perplexity</h2>
-                  <p className="text-neutral-600 leading-relaxed">
-                    Experience AI-powered search with real-time information synthesis
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-purple-500" />
-                    <span className="text-neutral-700">Real-Time Analysis</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <CheckCircle className="w-5 h-5 text-purple-500" />
-                    <span className="text-neutral-700">Cited Sources</span>
-                  </div>
-                </div>
-
-                <button 
-                  onClick={simulatePerplexitySearch}
-                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-                >
-                  <Globe className="w-5 h-5 mr-2" />
-                  Search AI Trends
-                </button>
-              </div>
-
-              <div>
-                {perplexityResults ? (
-                  <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm overflow-auto max-h-[500px]">
-                    <div className="prose prose-neutral max-w-none">
-                      <div className="whitespace-pre-wrap">{perplexityResults}</div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="h-full flex items-center justify-center p-12 rounded-xl bg-neutral-50 border border-neutral-100">
-                    <p className="text-neutral-500 text-center">
-                      Click "Search AI Trends" to see Perplexity in action
-                    </p>
-                  </div>
-                )}
-              </div>
+        <div className="space-y-6">
+          <div className="glass p-6 rounded-xl">
+            <div className="space-y-4">
+              <button 
+                onClick={() => {
+                  setPerplexityResults("# Latest AI Development Trends - June 2025\n\nBased on real-time analysis of multiple sources:\n\n## 1. Multimodal AI Systems\n- **Vision-Language Models**: New architectures achieving 98% accuracy in complex scene understanding\n- **Cross-Modal Learning**: Breakthrough in transferring knowledge between different sensory domains\n📊 *Source: Nature AI Journal, June 2025*\n\n## 2. Quantum-Enhanced Neural Networks\n- **Quantum Advantage**: 100x speedup in training large language models\n- **Hybrid Classical-Quantum Systems**: New frameworks for practical quantum ML\n📊 *Source: Quantum Computing Review, May 2025*\n\n## 3. Neuromorphic Computing\n- **Brain-Like Architectures**: 1000x energy efficiency improvement\n- **Adaptive Learning Systems**: Real-time neural network optimization\n📊 *Source: IEEE Spectrum, June 2025*\n\n## 4. Edge AI Advancements\n- **TinyML Breakthroughs**: Running GPT-4 level models on smartphones\n- **Edge-Cloud Synergy**: New distributed AI architectures\n📊 *Source: Edge Computing Digest, June 2025*\n\n## Industry Impact:\n\"These advances are revolutionizing everything from healthcare diagnostics to autonomous systems.\"\n- Dr. Sarah Chen, MIT AI Lab\n\n*All data verified across multiple academic sources*");
+                }}
+                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+              >
+                <Search className="w-5 h-5 mr-2" />
+                Search Trends
+              </button>
             </div>
           </div>
         </div>
@@ -1137,55 +883,80 @@ Based on real-time analysis of multiple sources:
     }
   ];
 
+  const nextSlide = () => {
+    setDirection(1);
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setDirection(-1);
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
   return (
-    <div className="min-h-screen bg-[#fafafa]">
-      <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-sm border-b border-neutral-100 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-lg font-medium text-neutral-900">AI Tools</h1>
-          <div className="text-sm text-neutral-500 font-medium">
-            {currentSlide + 1} / {slides.length}
-          </div>
-        </div>
-      </header>
-
-      <main className="pt-20 pb-24">
-        <div className="max-w-7xl mx-auto px-6">
-          {slides[currentSlide].content}
-        </div>
-      </main>
-
-      <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="bg-white/80 backdrop-blur-sm rounded-full shadow-lg border border-neutral-100 px-6 py-3 flex items-center space-x-6">
-          <button
-            onClick={prevSlide}
-            disabled={currentSlide === 0}
-            className="p-2 rounded-full hover:bg-neutral-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+    <div className="relative w-full h-full overflow-hidden bg-white">
+      <AnimatePresence initial={false} custom={direction} mode="wait">
+        <motion.div
+          key={currentSlide}
+          custom={direction}
+          variants={slideVariants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          className="absolute inset-0"
+        >
+          <motion.div
+            variants={contentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="h-full"
           >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
-          
-          <div className="flex space-x-3">
-            {slides.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === currentSlide 
-                    ? 'bg-neutral-900 scale-125' 
-                    : 'bg-neutral-300 hover:bg-neutral-400'
-                }`}
-              />
-            ))}
-          </div>
-          
-          <button
-            onClick={nextSlide}
-            disabled={currentSlide === slides.length - 1}
-            className="p-2 rounded-full hover:bg-neutral-100 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-          >
-            <ChevronRight className="w-5 h-5" />
-          </button>
+            {slides[currentSlide].content}
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-4">
+        <button
+          onClick={prevSlide}
+          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+        <div className="flex space-x-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setDirection(index > currentSlide ? 1 : -1);
+                setCurrentSlide(index);
+              }}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentSlide
+                  ? 'bg-primary scale-125'
+                  : 'bg-primary/30 hover:bg-primary/50'
+              }`}
+            />
+          ))}
         </div>
+        <button
+          onClick={nextSlide}
+          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      </div>
+
+      <div className="absolute top-4 right-4 flex items-center space-x-2">
+        <button
+          onClick={() => {
+            // Add your fullscreen logic here
+          }}
+          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
+        >
+          <Play className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );
