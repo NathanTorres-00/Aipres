@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Code, Search, Brain, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Code, Search, Brain } from 'lucide-react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 
 const slideVariants = {
