@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Code, Search, Brain, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const slideVariants = {
@@ -39,8 +39,6 @@ const contentVariants = {
 };
 
 const AIPresentationDemo = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [chatGptMemory, setChatGptMemory] = useState('');
   const [chatGptResponse, setChatGptResponse] = useState('');
   const [claudeDemo, setClaudeDemo] = useState('');
@@ -58,7 +56,7 @@ const AIPresentationDemo = () => {
     setPage([page + newDirection, newDirection]);
   };
 
-  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+  const handleDragEnd = (_: any, { offset, velocity }: { offset: { x: number }, velocity: { x: number } }) => {
     const swipe = swipePower(offset.x, velocity.x);
 
     if (swipe < -swipeConfidenceThreshold) {
@@ -84,9 +82,9 @@ const AIPresentationDemo = () => {
             <div className="text-neutral-500 space-y-2">
               <p className="text-lg">Featuring ChatGPT, Claude, and Perplexity</p>
               <p className="text-sm font-medium">By Nate Torres</p>
-      </div>
             </div>
-    </div>
+          </div>
+        </div>
       )
     },
 
@@ -648,7 +646,7 @@ const AIPresentationDemo = () => {
                 <div className="flex items-start space-x-6">
                   <div className="p-3 rounded-xl bg-blue-50">
                     <Code className="w-8 h-8 text-blue-600" />
-          </div>
+                  </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-medium text-neutral-900 mb-3">Cursor</h3>
                     <p className="text-neutral-600 leading-relaxed mb-4">
@@ -659,7 +657,7 @@ const AIPresentationDemo = () => {
                       <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">Trusted by top companies</span>
                       <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">1M+ developers</span>
                       <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">85% code completion accuracy</span>
-        </div>
+                </div>
                   </div>
                 </div>
               </div>
@@ -668,7 +666,7 @@ const AIPresentationDemo = () => {
                 <div className="flex items-start space-x-6">
                   <div className="p-3 rounded-xl bg-red-50">
                     <Video className="w-8 h-8 text-red-600" />
-        </div>
+                </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-medium text-neutral-900 mb-3">Google Veo 3</h3>
                     <p className="text-neutral-600 leading-relaxed mb-4">
@@ -924,16 +922,16 @@ const AIPresentationDemo = () => {
       </div>
 
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
-          <button
+        <button
           onClick={() => paginate(-1)}
           className="p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
-          >
+        >
           <ChevronLeft className="w-6 h-6 text-neutral-600" />
-          </button>
+        </button>
         <div className="flex items-center space-x-2">
-            {slides.map((_, index) => (
-              <button
-                key={index}
+          {slides.map((_, index) => (
+            <button
+              key={index}
               onClick={() => {
                 const newDirection = index > page ? 1 : -1;
                 setPage([index, newDirection]);
@@ -942,16 +940,16 @@ const AIPresentationDemo = () => {
                 index === page % slides.length
                   ? "bg-neutral-900"
                   : "bg-neutral-300 hover:bg-neutral-400"
-                }`}
-              />
-            ))}
-          </div>
-          <button
+              }`}
+            />
+          ))}
+        </div>
+        <button
           onClick={() => paginate(1)}
           className="p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
-          >
+        >
           <ChevronRight className="w-6 h-6 text-neutral-600" />
-          </button>
+        </button>
       </div>
     </div>
   );
