@@ -1,56 +1,41 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
-import { WhenISayAI } from './when-i-say-ai';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const slideVariants = {
   enter: (direction: number) => ({
     x: direction > 0 ? 1000 : -1000,
-    opacity: 0,
-    scale: 0.8,
+    opacity: 0
   }),
   center: {
+    zIndex: 1,
     x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: {
-      duration: 0.5,
-      ease: [0.4, 0, 0.2, 1],
-    },
+    opacity: 1
   },
   exit: (direction: number) => ({
+    zIndex: 0,
     x: direction < 0 ? 1000 : -1000,
-    opacity: 0,
-    scale: 0.8,
-    transition: {
-      duration: 0.5,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  }),
+    opacity: 0
+  })
 };
 
 const contentVariants = {
-  hidden: {
+  enter: {
     opacity: 0,
-    y: 20,
+    y: 20
   },
-  visible: {
+  center: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.5,
-      delay: 0.2,
-      ease: [0.4, 0, 0.2, 1],
-    },
+      delay: 0.2
+    }
   },
   exit: {
     opacity: 0,
-    y: -20,
-    transition: {
-      duration: 0.3,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
+    y: -20
+  }
 };
 
 const AIPresentationDemo = () => {
@@ -61,6 +46,27 @@ const AIPresentationDemo = () => {
   const [claudeDemo, setClaudeDemo] = useState('');
   const [claudeDemoType, setClaudeDemoType] = useState<'code' | 'script'>('code');
   const [perplexityResults, setPerplexityResults] = useState('');
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
+  const [[page, direction], setPage] = useState([0, 0]);
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection]);
+  };
+
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    const swipe = swipePower(offset.x, velocity.x);
+
+    if (swipe < -swipeConfidenceThreshold) {
+      paginate(1);
+    } else if (swipe > swipeConfidenceThreshold) {
+      paginate(-1);
+    }
+  };
 
   const slides = [
     {
@@ -78,9 +84,9 @@ const AIPresentationDemo = () => {
             <div className="text-neutral-500 space-y-2">
               <p className="text-lg">Featuring ChatGPT, Claude, and Perplexity</p>
               <p className="text-sm font-medium">By Nate Torres</p>
+      </div>
             </div>
-          </div>
-        </div>
+    </div>
       )
     },
 
@@ -277,20 +283,20 @@ const AIPresentationDemo = () => {
       content: (
         <div className="space-y-6">
           <div className="glass p-6 rounded-xl">
-            <div className="space-y-4">
-              <button 
+                <div className="space-y-4">
+                <button 
                 onClick={() => {
                   setChatGptMemory("✓ Remembered: You're writing a devotional book about finding peace in difficult times");
                   setTimeout(() => {
                     setChatGptResponse("I'll help you refine this devotional passage. Here's my analysis and suggestions:\n\n📝 **Original Passage:**\n\"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it.\"\n\n🔍 **Suggested Improvements:**\n\n1. **Tone & Sensitivity**\n   - The \"drowning\" metaphor might be too intense for readers going through trauma\n   - Consider a gentler metaphor like \"navigating through rough waters\"\n\n2. **Theological Accuracy**\n   - The \"lifeline\" imagery is good but could be more biblically grounded\n   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30\n\n3. **Revised Version:**\n\"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding.\"\n\nWould you like me to suggest more biblical references or help develop this theme further?");
                   }, 1500);
                 }}
-                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-              >
+                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                >
                 <Brain className="w-5 h-5 mr-2" />
                 Simulate Memory
-              </button>
-            </div>
+                </button>
+              </div>
           </div>
         </div>
       )
@@ -413,7 +419,7 @@ const AIPresentationDemo = () => {
       content: (
         <div className="space-y-6">
           <div className="glass p-6 rounded-xl">
-            <div className="space-y-4">
+                <div className="space-y-4">
               <button 
                 onClick={() => {
                   setClaudeDemoType('code');
@@ -425,16 +431,16 @@ const AIPresentationDemo = () => {
                 Generate Code
               </button>
 
-              <button 
+                <button 
                 onClick={() => {
                   setClaudeDemoType('script');
                   setClaudeDemo("📝 **Original Script:**\n\"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert.\"\n\n🎯 **Enhanced Version:**\n\"🎵 Calling All Voices! Join Our Musical Journey 🎵\n\nDear Music Enthusiasts,\n\nWe're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.\n\n📅 **Audition Details:**\n• Date: [Next Week's Date]\n• Time: 6:00 PM - 8:00 PM\n• Location: Main Sanctuary\n\n🎼 **What to Prepare:**\n• A brief vocal warm-up\n• A short piece of your choice (30-60 seconds)\n• Basic sight-reading assessment\n\n🌟 **Why Join Us?**\n• Be part of a supportive musical family\n• Develop your vocal skills\n• Perform in our upcoming concert series\n• Create lasting friendships\n\nNo prior choir experience required - just bring your passion for music!\n\nRSVP: [Contact Information]\n\nLet's make beautiful music together! 🎶\n\n#ChoirAuditions #JoinTheChoir #MusicCommunity\"");
                 }}
-                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-              >
+                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                >
                 <Search className="w-5 h-5 mr-2" />
                 Enhance Script
-              </button>
+                </button>
             </div>
           </div>
         </div>
@@ -558,16 +564,16 @@ const AIPresentationDemo = () => {
       content: (
         <div className="space-y-6">
           <div className="glass p-6 rounded-xl">
-            <div className="space-y-4">
-              <button 
+                <div className="space-y-4">
+                <button 
                 onClick={() => {
                   setPerplexityResults("# Latest AI Development Trends - June 2025\n\nBased on real-time analysis of multiple sources:\n\n## 1. Multimodal AI Systems\n- **Vision-Language Models**: New architectures achieving 98% accuracy in complex scene understanding\n- **Cross-Modal Learning**: Breakthrough in transferring knowledge between different sensory domains\n📊 *Source: Nature AI Journal, June 2025*\n\n## 2. Quantum-Enhanced Neural Networks\n- **Quantum Advantage**: 100x speedup in training large language models\n- **Hybrid Classical-Quantum Systems**: New frameworks for practical quantum ML\n📊 *Source: Quantum Computing Review, May 2025*\n\n## 3. Neuromorphic Computing\n- **Brain-Like Architectures**: 1000x energy efficiency improvement\n- **Adaptive Learning Systems**: Real-time neural network optimization\n📊 *Source: IEEE Spectrum, June 2025*\n\n## 4. Edge AI Advancements\n- **TinyML Breakthroughs**: Running GPT-4 level models on smartphones\n- **Edge-Cloud Synergy**: New distributed AI architectures\n📊 *Source: Edge Computing Digest, June 2025*\n\n## Industry Impact:\n\"These advances are revolutionizing everything from healthcare diagnostics to autonomous systems.\"\n- Dr. Sarah Chen, MIT AI Lab\n\n*All data verified across multiple academic sources*");
                 }}
-                className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
-              >
+                  className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
+                >
                 <Search className="w-5 h-5 mr-2" />
                 Search Trends
-              </button>
+                </button>
             </div>
           </div>
         </div>
@@ -642,7 +648,7 @@ const AIPresentationDemo = () => {
                 <div className="flex items-start space-x-6">
                   <div className="p-3 rounded-xl bg-blue-50">
                     <Code className="w-8 h-8 text-blue-600" />
-                  </div>
+          </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-medium text-neutral-900 mb-3">Cursor</h3>
                     <p className="text-neutral-600 leading-relaxed mb-4">
@@ -653,7 +659,7 @@ const AIPresentationDemo = () => {
                       <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full">Trusted by top companies</span>
                       <span className="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">1M+ developers</span>
                       <span className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full">85% code completion accuracy</span>
-                    </div>
+        </div>
                   </div>
                 </div>
               </div>
@@ -662,7 +668,7 @@ const AIPresentationDemo = () => {
                 <div className="flex items-start space-x-6">
                   <div className="p-3 rounded-xl bg-red-50">
                     <Video className="w-8 h-8 text-red-600" />
-                  </div>
+        </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-medium text-neutral-900 mb-3">Google Veo 3</h3>
                     <p className="text-neutral-600 leading-relaxed mb-4">
@@ -883,80 +889,69 @@ const AIPresentationDemo = () => {
     }
   ];
 
-  const nextSlide = () => {
-    setDirection(1);
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setDirection(-1);
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-  };
-
   return (
-    <div className="relative w-full h-full overflow-hidden bg-white">
-      <AnimatePresence initial={false} custom={direction} mode="wait">
-        <motion.div
-          key={currentSlide}
-          custom={direction}
-          variants={slideVariants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          className="absolute inset-0"
-        >
+    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-neutral-50 to-neutral-100">
+      <div className="absolute inset-0 flex items-center justify-center">
+        <AnimatePresence initial={false} custom={direction}>
           <motion.div
-            variants={contentVariants}
-            initial="hidden"
-            animate="visible"
+            key={page}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
             exit="exit"
-            className="h-full"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
+            }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={handleDragEnd}
+            className="absolute w-full h-full"
           >
-            {slides[currentSlide].content}
+            <motion.div
+              variants={contentVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="h-full flex items-center justify-center p-8"
+            >
+              {slides[page % slides.length].content}
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </AnimatePresence>
-
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center space-x-4">
-        <button
-          onClick={prevSlide}
-          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
-        >
-          <ChevronLeft className="w-6 h-6" />
-        </button>
-        <div className="flex space-x-2">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setDirection(index > currentSlide ? 1 : -1);
-                setCurrentSlide(index);
-              }}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-primary scale-125'
-                  : 'bg-primary/30 hover:bg-primary/50'
-              }`}
-            />
-          ))}
-        </div>
-        <button
-          onClick={nextSlide}
-          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
-        >
-          <ChevronRight className="w-6 h-6" />
-        </button>
+        </AnimatePresence>
       </div>
 
-      <div className="absolute top-4 right-4 flex items-center space-x-2">
-        <button
-          onClick={() => {
-            // Add your fullscreen logic here
-          }}
-          className="p-2 rounded-full glass hover:scale-105 transition-transform duration-300"
-        >
-          <Play className="w-5 h-5" />
-        </button>
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-4">
+          <button
+          onClick={() => paginate(-1)}
+          className="p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
+          >
+          <ChevronLeft className="w-6 h-6 text-neutral-600" />
+          </button>
+        <div className="flex items-center space-x-2">
+            {slides.map((_, index) => (
+              <button
+                key={index}
+              onClick={() => {
+                const newDirection = index > page ? 1 : -1;
+                setPage([index, newDirection]);
+              }}
+              className={`w-2 h-2 rounded-full transition-colors ${
+                index === page % slides.length
+                  ? "bg-neutral-900"
+                  : "bg-neutral-300 hover:bg-neutral-400"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+          onClick={() => paginate(1)}
+          className="p-2 rounded-full bg-white/80 backdrop-blur-sm shadow-lg hover:bg-white transition-colors"
+          >
+          <ChevronRight className="w-6 h-6 text-neutral-600" />
+          </button>
       </div>
     </div>
   );
