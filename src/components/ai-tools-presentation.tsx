@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play, Code, Search, Brain, CheckCircle, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Code, Search, Brain, ExternalLink, Terminal, Globe, Building2, Users, TrendingUp, Video, Eye, Headphones } from 'lucide-react';
 import { motion, AnimatePresence, PanInfo } from 'framer-motion';
 
 const slideVariants = {
@@ -39,8 +39,6 @@ const contentVariants = {
 };
 
 const AIPresentationDemo = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [chatGptMemory, setChatGptMemory] = useState('');
   const [chatGptResponse, setChatGptResponse] = useState('');
   const [claudeDemo, setClaudeDemo] = useState('');
@@ -288,7 +286,23 @@ const AIPresentationDemo = () => {
                 onClick={() => {
                   setChatGptMemory("✓ Remembered: You're writing a devotional book about finding peace in difficult times");
                   setTimeout(() => {
-                    setChatGptResponse("I'll help you refine this devotional passage. Here's my analysis and suggestions:\n\n📝 **Original Passage:**\n\"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it.\"\n\n🔍 **Suggested Improvements:**\n\n1. **Tone & Sensitivity**\n   - The \"drowning\" metaphor might be too intense for readers going through trauma\n   - Consider a gentler metaphor like \"navigating through rough waters\"\n\n2. **Theological Accuracy**\n   - The \"lifeline\" imagery is good but could be more biblically grounded\n   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30\n\n3. **Revised Version:**\n\"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding.\"\n\nWould you like me to suggest more biblical references or help develop this theme further?");
+                    setChatGptResponse(`📝 **Original Passage:**
+"In the midst of life's storms, we often feel like we're drowning in our problems. But God is always there, ready to throw us a lifeline. We just need to reach out and grab it."
+
+🔍 **Suggested Improvements:**
+
+1. **Tone & Sensitivity**
+   - The "drowning" metaphor might be too intense for readers going through trauma
+   - Consider a gentler metaphor like "navigating through rough waters"
+
+2. **Theological Accuracy**
+   - The "lifeline" imagery is good but could be more biblically grounded
+   - Consider referencing Psalm 46:1-2 or Matthew 11:28-30
+
+3. **Revised Version:**
+"In life's challenging seasons, we may feel overwhelmed by the waves of difficulty. Yet, as Psalm 46 reminds us, 'God is our refuge and strength, an ever-present help in trouble.' Like a skilled navigator, He guides us through the storm, offering His peace that surpasses understanding."
+
+Would you like me to suggest more biblical references or help develop this theme further?`);
                   }, 1500);
                 }}
                 className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
@@ -296,6 +310,12 @@ const AIPresentationDemo = () => {
                 <Brain className="w-5 h-5 mr-2" />
                 Simulate Memory
               </button>
+              {chatGptMemory && <div className="mt-4 p-3 bg-neutral-100 rounded-lg text-neutral-700 text-sm">{chatGptMemory}</div>}
+              {chatGptResponse && (
+                <div className="glass p-4 rounded-lg mt-4 max-h-60 overflow-y-auto whitespace-pre-wrap text-neutral-800">
+                  {chatGptResponse}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -423,24 +443,177 @@ const AIPresentationDemo = () => {
               <button 
                 onClick={() => {
                   setClaudeDemoType('code');
-                  setClaudeDemo("// Advanced Todo App with TypeScript and React\nimport React, { useState } from 'react';\n\ninterface Todo {\n  id: number;\n  text: string;\n  completed: boolean;\n  priority: 'low' | 'medium' | 'high';\n  dueDate?: Date;\n}\n\nconst TodoApp: React.FC = () => {\n  const [todos, setTodos] = useState<Todo[]>([]);\n  const [input, setInput] = useState('');\n  const [priority, setPriority] = useState<Todo['priority']>('medium');\n\n  const addTodo = () => {\n    if (input.trim()) {\n      setTodos([\n        ...todos,\n        {\n          id: Date.now(),\n          text: input.trim(),\n          completed: false,\n          priority,\n          dueDate: new Date()\n        }\n      ]);\n      setInput('');\n    }\n  };\n\n  const toggleTodo = (id: number) => {\n    setTodos(todos.map(todo =>\n      todo.id === id \n        ? { ...todo, completed: !todo.completed }\n        : todo\n    ));\n  };\n\n  const deleteTodo = (id: number) => {\n    setTodos(todos.filter(todo => todo.id !== id));\n  };\n\n  return (\n    <div className=\"max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg\">\n      <h1 className=\"text-2xl font-bold mb-4\">Todo List</h1>\n      \n      <div className=\"flex gap-2 mb-4\">\n        <input\n          type=\"text\"\n          value={input}\n          onChange={(e) => setInput(e.target.value)}\n          className=\"flex-1 px-3 py-2 border rounded\"\n          placeholder=\"Add a new todo...\"\n        />\n        <select\n          value={priority}\n          onChange={(e) => setPriority(e.target.value as Todo['priority'])}\n          className=\"px-3 py-2 border rounded\"\n        >\n          <option value=\"low\">Low</option>\n          <option value=\"medium\">Medium</option>\n          <option value=\"high\">High</option>\n        </select>\n        <button\n          onClick={addTodo}\n          className=\"px-4 py-2 bg-blue-500 text-white rounded\"\n        >\n          Add\n        </button>\n      </div>\n\n      <ul className=\"space-y-2\">\n        {todos.map(todo => (\n          <li\n            key={todo.id}\n            className={`flex items-center justify-between p-3 border rounded ${todo.completed ? 'bg-gray-100' : ''}`}\n          >\n            <div className=\"flex items-center gap-2\">\n              <input\n                type=\"checkbox\"\n                checked={todo.completed}\n                onChange={() => toggleTodo(todo.id)}\n              />\n              <span className={`${todo.completed ? 'line-through' : ''}`}>\n                {todo.text}\n              </span>\n              <span className={`text-sm px-2 py-1 rounded ${\n                todo.priority === 'high' \n                  ? 'bg-red-100 text-red-700'\n                  : todo.priority === 'medium'\n                  ? 'bg-yellow-100 text-yellow-700'\n                  : 'bg-green-100 text-green-700'\n              }`}>\n                {todo.priority}\n              </span>\n            </div>\n            <button\n              onClick={() => deleteTodo(todo.id)}\n              className=\"text-red-500 hover:text-red-700\"\n            >\n              Delete\n            </button>\n          </li>\n        ))}\n      </ul>\n    </div>\n  );\n};\n\nexport default TodoApp;");
+                  setClaudeDemo(`// Advanced Todo App with TypeScript and React
+import React, { useState } from 'react';
+
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+  priority: 'low' | 'medium' | 'high';
+  dueDate?: Date;
+}
+
+const TodoApp: React.FC = () => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState('');
+  const [priority, setPriority] = useState<Todo['priority']>('medium');
+
+  const addTodo = () => {
+    if (input.trim()) {
+      setTodos([
+        ...todos,
+        {
+          id: Date.now(),
+          text: input.trim(),
+          completed: false,
+          priority,
+          dueDate: new Date()
+        }
+      ]);
+      setInput('');
+    }
+  };
+
+  const toggleTodo = (id: number) => {
+    setTodos(todos.map(todo =>
+      todo.id === id
+        ? { ...todo, completed: !todo.completed }
+        : todo
+    ));
+  };
+
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter(todo => todo.id !== id));
+  };
+
+  return (
+    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-2xl font-bold mb-4">Todo List</h1>
+      
+      <div className="flex gap-2 mb-4">
+        <input
+          type="text"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          className="flex-1 px-3 py-2 border rounded"
+          placeholder="Add a new todo..."
+        />
+        <select
+          value={priority}
+          onChange={(e) => setPriority(e.target.value as Todo['priority'])}
+          className="px-3 py-2 border rounded"
+        >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <button
+          onClick={addTodo}
+          className="px-4 py-2 bg-blue-500 text-white rounded"
+        >
+          Add
+        </button>
+      </div>
+
+      <ul className="space-y-2">
+        {todos.map(todo => (
+          <li
+            key={todo.id}
+            className={`flex items-center justify-between p-3 border rounded ${todo.completed ? 'bg-gray-100' : ''}`}
+          >
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo.id)}
+              />
+              <span className={`${todo.completed ? 'line-through' : ''}`}>
+                {todo.text}
+              </span>
+              <span className={`text-sm px-2 py-1 rounded ${
+                todo.priority === 'high'
+                  ? 'bg-red-100 text-red-700'
+                  : todo.priority === 'medium'
+                  ? 'bg-yellow-100 text-yellow-700'
+                  : 'bg-green-100 text-green-700'
+              }`}>
+                {todo.priority}
+              </span>
+            </div>
+            <button
+              onClick={() => deleteTodo(todo.id)}
+              className="text-red-500 hover:text-red-700"
+            >
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default TodoApp;`);
                 }}
                 className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
               >
                 <Code className="w-5 h-5 mr-2" />
                 Generate Code
               </button>
+              {claudeDemoType === 'code' && claudeDemo && (
+                <div className="glass p-4 rounded-lg mt-4 max-h-60 overflow-y-auto whitespace-pre-wrap text-neutral-800 text-sm">
+                  {claudeDemo}
+                </div>
+              )}
 
               <button 
                 onClick={() => {
                   setClaudeDemoType('script');
-                  setClaudeDemo("📝 **Original Script:**\n\"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert.\"\n\n🎯 **Enhanced Version:**\n\"🎵 Calling All Voices! Join Our Musical Journey 🎵\n\nDear Music Enthusiasts,\n\nWe're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.\n\n📅 **Audition Details:**\n• Date: [Next Week's Date]\n• Time: 6:00 PM - 8:00 PM\n• Location: Main Sanctuary\n\n🎼 **What to Prepare:**\n• A brief vocal warm-up\n• A short piece of your choice (30-60 seconds)\n• Basic sight-reading assessment\n\n🌟 **Why Join Us?**\n• Be part of a supportive musical family\n• Develop your vocal skills\n• Perform in our upcoming concert series\n• Create lasting friendships\n\nNo prior choir experience required - just bring your passion for music!\n\nRSVP: [Contact Information]\n\nLet's make beautiful music together! 🎶\n\n#ChoirAuditions #JoinTheChoir #MusicCommunity\"");
+                  setClaudeDemo(`📝 **Original Script:**
+"Hey everyone! We're having choir auditions next week. Come join us if you like to sing. We need more people for our upcoming concert."
+
+🎯 **Enhanced Version:**
+"🎵 Calling All Voices! Join Our Musical Journey 🎵
+
+Dear Music Enthusiasts,
+
+We're thrilled to announce auditions for our upcoming concert season! Whether you're a seasoned vocalist or just discovering your voice, we welcome you to be part of our vibrant choir community.
+
+📅 **Audition Details:**
+• Date: [Next Week's Date]
+• Time: 6:00 PM - 8:00 PM
+• Location: Main Sanctuary
+
+🎼 **What to Prepare:**
+• A brief vocal warm-up
+• A short piece of your choice (30-60 seconds)
+• Basic sight-reading assessment
+
+🌟 **Why Join Us?**
+• Be part of a supportive musical family
+• Develop your vocal skills
+• Perform in our upcoming concert series
+• Create lasting friendships
+
+No prior choir experience required - just bring your passion for music!
+
+RSVP: [Contact Information]
+
+Let's make beautiful music together! 🎶
+
+#ChoirAuditions #JoinTheChoir #MusicCommunity"`);
                 }}
                 className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
               >
                 <Search className="w-5 h-5 mr-2" />
                 Enhance Script
               </button>
+              {claudeDemoType === 'script' && claudeDemo && (
+                <div className="glass p-4 rounded-lg mt-4 max-h-60 overflow-y-auto whitespace-pre-wrap text-neutral-800 text-sm">
+                  {claudeDemo}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -567,13 +740,46 @@ const AIPresentationDemo = () => {
             <div className="space-y-4">
               <button 
                 onClick={() => {
-                  setPerplexityResults("# Latest AI Development Trends - June 2025\n\nBased on real-time analysis of multiple sources:\n\n## 1. Multimodal AI Systems\n- **Vision-Language Models**: New architectures achieving 98% accuracy in complex scene understanding\n- **Cross-Modal Learning**: Breakthrough in transferring knowledge between different sensory domains\n📊 *Source: Nature AI Journal, June 2025*\n\n## 2. Quantum-Enhanced Neural Networks\n- **Quantum Advantage**: 100x speedup in training large language models\n- **Hybrid Classical-Quantum Systems**: New frameworks for practical quantum ML\n📊 *Source: Quantum Computing Review, May 2025*\n\n## 3. Neuromorphic Computing\n- **Brain-Like Architectures**: 1000x energy efficiency improvement\n- **Adaptive Learning Systems**: Real-time neural network optimization\n📊 *Source: IEEE Spectrum, June 2025*\n\n## 4. Edge AI Advancements\n- **TinyML Breakthroughs**: Running GPT-4 level models on smartphones\n- **Edge-Cloud Synergy**: New distributed AI architectures\n📊 *Source: Edge Computing Digest, June 2025*\n\n## Industry Impact:\n\"These advances are revolutionizing everything from healthcare diagnostics to autonomous systems.\"\n- Dr. Sarah Chen, MIT AI Lab\n\n*All data verified across multiple academic sources*");
+                  setPerplexityResults(`# Latest AI Development Trends - June 2025
+
+Based on real-time analysis of multiple sources:
+
+## 1. Multimodal AI Systems
+- **Vision-Language Models**: New architectures achieving 98% accuracy in complex scene understanding
+- **Cross-Modal Learning**: Breakthrough in transferring knowledge between different sensory domains
+📊 *Source: Nature AI Journal, June 2025*
+
+## 2. Quantum-Enhanced Neural Networks
+- **Quantum Advantage**: 100x speedup in training large language models
+- **Hybrid Classical-Quantum Systems**: New frameworks for practical quantum ML
+📊 *Source: Quantum Computing Review, May 2025*
+
+## 3. Neuromorphic Computing
+- **Brain-Like Architectures**: 1000x energy efficiency improvement
+- **Adaptive Learning Systems**: Real-time neural network optimization
+📊 *Source: IEEE Spectrum, June 2025*
+
+## 4. Edge AI Advancements
+- **TinyML Breakthroughs**: Running GPT-4 level models on smartphones
+- **Edge-Cloud Synergy**: New distributed AI architectures
+📊 *Source: Edge Computing Digest, June 2025*
+
+## Industry Impact:
+"These advances are revolutionizing everything from healthcare diagnostics to autonomous systems."
+- Dr. Sarah Chen, MIT AI Lab
+
+*All data verified across multiple academic sources*`);
                 }}
                 className="w-full bg-neutral-900 text-white py-4 px-6 rounded-xl flex items-center justify-center hover:bg-neutral-800 transition-colors"
               >
                 <Search className="w-5 h-5 mr-2" />
                 Search Trends
               </button>
+              {perplexityResults && (
+                <div className="glass p-4 rounded-lg mt-4 max-h-60 overflow-y-auto whitespace-pre-wrap text-neutral-800 text-sm">
+                  {perplexityResults}
+                </div>
+              )}
             </div>
           </div>
         </div>
