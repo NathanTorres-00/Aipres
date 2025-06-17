@@ -962,7 +962,7 @@ Based on real-time analysis of multiple sources:
       content: (
         <div className="flex flex-col h-[70vh] justify-center">
           <div className="max-w-5xl mx-auto w-full">
-            <div className="text-center mb-8">
+            <div className="text-center mb-8 pt-12 px-6">
               <h2 className="text-3xl font-light text-neutral-900 mb-4">Cursor: The AI Code Editor</h2>
               <p className="text-neutral-600 leading-relaxed max-w-2xl mx-auto">
                 Experience the future of coding with Cursor's AI-powered features
